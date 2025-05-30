@@ -35,16 +35,17 @@ public class VmSexedService {
                 .build();
     }
 
-    @Tool(description = "查询两性约会,性教育,性健康相关文章内容信息。输出标题-title,正文内容-content ,原文链接-link,查看更多-moreLink 等字段信息;最多给出3片最相关的文章，" +
-            "查询不到符合条件的数据，自动加1，再次查询")
+    @Tool(description = "查询两性约会,性教育,性健康相关文章内容信息。输出标题-title,正文内容-content ,原文链接-link,查看更多-moreLink 等字段信息;最多给出3条最相关的文章")
     public String getSexEducationArticles(
-            @ToolParam(description = "pageNo,查询时分页数据时当前页，默认是1，查询不到符合条件的数据，自动加1，再次查询") String pageNo
+            @ToolParam(description = "pageNo,每次从1到20之间随机一个值，不能每次查询pageNo都是1") Integer pageNo,
+            @ToolParam(description = "pageSize,查询时每页条数，默认是3") Integer pageSize
     ) {
 
         try {
             String response = webClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .queryParam("pageNo",pageNo)
+                            .queryParam("pageSize",pageSize)
                             .build())
                     .retrieve()
                     .bodyToMono(String.class)
